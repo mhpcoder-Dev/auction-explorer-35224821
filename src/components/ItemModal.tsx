@@ -2,7 +2,7 @@ import { AuctionItem } from '@/types/auction';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, MapPin, Calendar, Share2, Clock } from 'lucide-react';
+import { MapPin, Calendar, Share2, Clock } from 'lucide-react';
 import { getAssetTypeLabel } from '@/lib/assetClassifier';
 import { toast } from 'sonner';
 import CommentThread from './CommentThread';
@@ -122,26 +122,20 @@ export default function ItemModal({ item, open, onOpenChange }: ItemModalProps) 
           {/* Source Info */}
           <div className="text-xs text-muted-foreground space-y-1">
             <p>Source: {item.sourceName}</p>
+            <p>Source URL: {item.sourceUrl}</p>
             <p>Item ID: {item.id}</p>
           </div>
 
           {/* Actions */}
           <div className="flex gap-2 pt-4 border-t">
             <Button
-              variant="default"
-              className="flex-1"
-              onClick={() => window.open(item.sourceUrl, '_blank', 'noopener,noreferrer')}
-            >
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Open Original Source
-            </Button>
-            <Button
               variant="outline"
-              size="icon"
               onClick={handleShare}
               title="Share this item"
+              className="flex items-center gap-2"
             >
               <Share2 className="h-4 w-4" />
+              Copy Share Link
             </Button>
           </div>
 
