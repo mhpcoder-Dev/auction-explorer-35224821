@@ -2,7 +2,7 @@ import { AuctionItem } from '@/types/auction';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Maximize2, MapPin, Calendar, MessageSquare } from 'lucide-react';
+import { MapPin, Calendar, MessageSquare } from 'lucide-react';
 import { getAssetTypeLabel } from '@/lib/assetClassifier';
 import { useState, useEffect } from 'react';
 import ItemModal from './ItemModal';
@@ -86,30 +86,32 @@ export default function ItemCard({ item }: ItemCardProps) {
     <>
       <Card 
         id={`item-${item.id}`}
-        className="scroll-mt-24 shadow-card hover:shadow-lg transition-shadow duration-300"
+        className="scroll-mt-24 shadow-card hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+        onClick={() => setShowModal(true)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setShowModal(true);
+          }
+        }}
       >
         <article>
           {/* Image */}
           {item.imageUrl && (
-            <a
-              href={item.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
-            >
-              <div className="relative aspect-video w-full overflow-hidden rounded-t-lg bg-muted">
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-              </div>
-            </a>
+            <div className="relative aspect-video w-full overflow-hidden rounded-t-lg bg-muted">
+              <img
+                src={item.imageUrl}
+                alt={item.title}
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
           )}
 
           <CardHeader>
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <Badge variant="secondary" className="font-medium">
@@ -120,39 +122,12 @@ export default function ItemCard({ item }: ItemCardProps) {
                   )}
                 </div>
                 
-                {/* Clickable Title */}
-                <a
-                  href={item.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-primary transition-colors"
-                >
-                  <CardTitle className="text-xl mb-2">{item.title}</CardTitle>
-                </a>
+                <CardTitle className="text-xl mb-2">{item.title}</CardTitle>
                 
-                {/* Clickable Description */}
-                <a
-                  href={item.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-primary transition-colors"
-                >
-                  <CardDescription className="text-base">
-                    {item.shortDescription}
-                  </CardDescription>
-                </a>
+                <CardDescription className="text-base">
+                  {item.shortDescription}
+                </CardDescription>
               </div>
-
-              {/* Expand Button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setShowModal(true)}
-                title="View details"
-                className="flex-shrink-0"
-              >
-                <Maximize2 className="h-5 w-5" />
-              </Button>
             </div>
           </CardHeader>
 
@@ -185,13 +160,10 @@ export default function ItemCard({ item }: ItemCardProps) {
 
           <CardFooter className="flex items-center gap-3">
             {/* Comment Count Badge */}
-            <button
-              onClick={() => setShowModal(true)}
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MessageSquare className="h-4 w-4" />
               <span>{commentCount} {commentCount === 1 ? 'comment' : 'comments'}</span>
-            </button>
+            </div>
           </CardFooter>
         </article>
       </Card>
